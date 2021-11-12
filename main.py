@@ -48,21 +48,23 @@ class RSHandler(http.server.SimpleHTTPRequestHandler):
 			img = runescape.parse_string(fullstring)
 
 			fileobj = None
+			content_type = "text/html"
 			if(len(img)==1):
 				fileobj = tempfile.NamedTemporaryFile(suffix=".png",prefix="runescape-")
 				filename = fileobj.name
 				runescape.single_frame_save(img[0], file=fileobj.file)
 				fileobj.file.flush()
-				self.send_header("Content-Type", "image/png")
+				content_type = "image/png"
 			else:
 				fileobj = tempfile.NamedTemporaryFile(suffix=".gif",prefix="runescape-")
 				filename = fileobj.name
 				runescape.multi_frame_save(img, file=fileobj.file)
 				fileobj.file.flush()
-				self.send_header("Content-Type", "image/gif")
+				content_type = "image/gif"
 			fileobj.file.seek(0)
 
 			self.send_response(200)
+			self.send_header("Content-Type", content_type)
 			self.end_headers()
 			self.wfile.write(fileobj.read())
 			return
