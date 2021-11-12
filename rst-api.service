@@ -10,6 +10,7 @@ ExecStartPre=-/usr/bin/docker stop rst-api
 ExecStartPre=-/usr/bin/docker rm rst-api
 ExecStart=/usr/bin/docker run --name rst-api \
 	-v /etc/localtime:/etc/localtime:ro \
+	-p 8777:8777 \
 	runescapetext-api:latest
 
 [Install]
