@@ -1,0 +1,16 @@
+[Unit]
+Description=RunescapeText API Container
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker stop rst-api
+ExecStartPre=-/usr/bin/docker rm rst-api
+ExecStart=/usr/bin/docker run --name rst-api \
+	-v /etc/localtime:/etc/localtime:ro \
+	runescapetext-api:latest
+
+[Install]
+WantedBy=multi-user.target
